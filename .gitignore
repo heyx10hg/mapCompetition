@@ -22,5 +22,6 @@ venv/
 *.bak-*
 
 # Keep generated deliverables, but avoid accidental local scratch exports.
+spike/out/
 scratch/
 tmp/
