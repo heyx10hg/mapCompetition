@@ -1,0 +1,33 @@
+{
+  "scope": "广州11区",
+  "coordinate_system": "WGS-84 unless --keep-gcj02 is passed",
+  "removed_synthetic_samples": 38,
+  "clean_rows": 14093,
+  "contains_chicken_rows": 10966,
+  "signboard_rows": 7211,
+  "recommended_dish_rows": 3755,
+  "label_counts": {
+    "other_chicken": 4368,
+    "modern": 3613,
+    "non_chicken": 3127,
+    "traditional": 2985
+  },
+  "match_source_counts": {
+    "招牌": 7211,
+    "": 3127,
+    "推荐菜": 3755
+  },
+  "cleaning_stats": {
+    "raw": 38673,
+    "other_chicken": 4368,
+    "modern": 3613,
+    "non_chicken": 3127,
+    "traditional": 2985,
+    "false_positive": 115,
+    "non_food": 57,
+    "dup_id": 742,
+    "dup_namegrid": 13,
+    "out_of_scope": 23653
+  },
+  "metric_warning": "These metrics describe visible restaurant-space penetration, not actual household or order-level chicken consumption."
+}

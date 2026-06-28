@@ -1,0 +1,26 @@
+.DS_Store
+Thumbs.db
+
+# Local assistant/editor state
+.claude/
+.codex/
+.agents/
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local logs and temporary files
+*.log
+*.tmp
+*.bak
+*.bak-*
+
+# Keep generated deliverables, but avoid accidental local scratch exports.
+scratch/
+tmp/

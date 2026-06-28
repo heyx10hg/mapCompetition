@@ -1,0 +1,9 @@
+# Large data artifacts should be versioned through Git LFS.
+*.jsonl filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+
+# Office and image binaries are binary-safe in Git.
+*.docx binary
+*.png binary
+*.jpg binary
+*.jpeg binary

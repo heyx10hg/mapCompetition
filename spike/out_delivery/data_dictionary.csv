@@ -1,0 +1,15 @@
+﻿field,meaning,usage
+id,高德POI id,用于去重和回溯原始记录
+name,店铺原名,GeoScene 弹窗标题
+name_norm,规范化店名,去括号和空白后用于去重
+label,鸡肴分类,traditional / modern / other_chicken / non_chicken
+match_source,命中来源,招牌=店名命中；推荐菜=tag字段命中；空=未命中鸡菜
+district,广州行政区,用于分区统计和专题图关联
+address,地址,用于人工核验和弹窗展示
+typecode,高德类目码,05开头为餐饮服务
+type,高德类目名称,辅助识别餐饮业态
+tag,高德特色/推荐菜字段,宽口径识别鸡菜的主要补充来源
+lng,经度,默认输出 WGS-84
+lat,纬度,默认输出 WGS-84
+signboard_pct,招牌口径渗透率,店名含鸡POI / 全量餐饮POI，主指标
+serves_pct,宽口径渗透率,店名或推荐菜含鸡POI / 全量餐饮POI，辅助指标
