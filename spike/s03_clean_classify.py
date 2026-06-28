@@ -32,22 +32,25 @@ HERE = Path(__file__).parent
 # 划分轴 = 菜系/地域归属，不是时间新旧（鸡公煲60年代就流行，按"老/新"分必然处处尴尬）。
 # 判定顺序（对每个命中词从上往下问，命中即停）：
 #   1) 含"鸡"字但非鸡肉菜               -> FALSE_POSITIVE (excluded)
-#   2) 广府/客家/潮汕本土做法 或 广东地方鸡种 -> TRADITIONAL
-#   3) 明确外省/境外菜系               -> MODERN
-#   4) 够不上具名 / 归属不明 / 泛含鸡(泛"鸡煲""鸡饭") -> GENERIC (other_chicken)
+#   2) 广府/客家/潮汕本土做法、广东地方鸡种、广东本地饭式 -> TRADITIONAL
+#   3) 明确外省/境外菜系 或 现代快餐/披萨/汉堡鸡类产品 -> MODERN
+#   4) 够不上具名 / 归属不明 / 泛含鸡(泛"鸡煲""鸡饭""鸡肉") -> GENERIC (other_chicken)
 # 边界裁决（一次性写死，避免组员各判各的）：
 #   - 外来：海南(文昌鸡/椰子鸡)、河南(桶子鸡)、重庆(鸡公煲) = MODERN（与时间无关）
 #   - 本土：广东地方鸡种(清远/胡须/杏花/怀乡/湛江鸡) = TRADITIONAL（本土食材信号）
 #   - 泛义"鸡煲" -> other_chicken；但"啫啫鸡煲/猪肚鸡煲"会被具名词先捞走 -> traditional
+#   - 煲仔饭按广东本地饭式 -> traditional（生活经验补口径，tag 不一定完整列出鸡）
+#   - 普通"烧鸡"默认 modern；若带客家/粤菜/荔枝木/地方鸡种等广东本地语境 -> traditional
 #   - 待定：脆皮鸡（广式炸子鸡算粤本土？现暂留 MODERN，若裁定本土请移到 TRADITIONAL）
 # 注意：traditional/modern/other 之间互挪【不改渗透率】(三者都在分子)，只影响"传统vs现代"主题图。
 # 正式版应把各类扩到 50+ 词，并人工抽检 200 条校准（见 README"下一步"）。
 TRADITIONAL = [  # 本土粤式：广府/客家/潮汕传统做法 + 广东地方鸡种
     "白切鸡", "白斩鸡", "盐焗鸡", "豉油鸡", "手撕鸡", "沙姜鸡", "葱油鸡",
     "太爷鸡", "啫啫鸡", "豆酱鸡", "卤水鸡", "猪肚鸡", "隔水蒸鸡",
-    "清远鸡", "清远麻鸡", "胡须鸡", "杏花鸡", "怀乡鸡", "湛江鸡", "走地鸡", "卤鸡腿",
+    "清远鸡", "清远麻鸡", "胡须鸡", "杏花鸡", "怀乡鸡", "湛江鸡", "走地鸡",
     "阳山鸡", "香油鸡", "桑拿鸡",  # 词频校准补充：阳山鸡=清远/化州香油鸡=粤西/顺德桑拿鸡
     "土鸡",  # 食材词，与"走地鸡"同类(本土食材信号)
+    "煲仔饭", "滑鸡煲仔饭", "窑鸡", "客家窑鸡", "客家烧鸡", "荔枝木烧鸡",
 ]
 MODERN = [  # 外来菜系：外省/境外（含原在传统里的 桶子鸡=河南、文昌鸡=海南，按地域轴归此）
     "炸鸡", "韩式炸鸡", "鸡排", "鸡米花", "黄焖鸡", "鸡公煲", "大盘鸡",
@@ -55,9 +58,22 @@ MODERN = [  # 外来菜系：外省/境外（含原在传统里的 桶子鸡=河
     "桶子鸡", "文昌鸡",
     "海南鸡", "柴火鸡", "地锅鸡", "烧鸡公",  # 词频校准补充：海南/重庆柴火/河南地锅/湘渝烧鸡公
     "火鸡", "鸡柳", "百味鸡",  # 词频校准补充：赛百味火鸡(鸡胸,西式)/炸鸡柳/紫燕卤味连锁
+    "烧鸡", "卤鸡腿", "竹筒饭",
+    "鸡块", "麦乐鸡", "麦辣鸡", "板烧鸡", "脆鸡", "鸡腿堡", "鸡肉汉堡", "全鸡汉堡",
+    "鸡肉比萨", "鸡肉披萨", "奥尔良烤鸡", "照烧鸡", "烤鸡披萨", "烤鸡比萨",
 ]
 FALSE_POSITIVE = ["田鸡", "鸡尾酒", "鸡蛋仔", "鸡蛋灌饼", "鸡精", "鸡毛店",]  # 含"鸡"但与鸡肉无关
 GENERIC = ["鸡"]  # 兜底：含鸡但词典未命中 -> "其他含鸡"
+HIGH_PRIORITY_MODERN = [
+    "竹筒饭",
+    "麦辣鸡", "板烧鸡", "照烧鸡", "鸡腿堡", "鸡块", "鸡排", "鸡米花", "鸡柳",
+    "全鸡汉堡", "脆鸡", "鸡肉汉堡",
+    "鸡肉比萨", "鸡肉披萨", "烤鸡披萨", "烤鸡比萨", "奥尔良",
+]
+LOCAL_ROAST_CHICKEN_CONTEXT = [
+    "客家", "粤菜", "广府", "广东", "广州", "顺德", "潮汕", "潮州", "清远",
+    "阳山", "湛江", "从化", "增城", "荔枝木", "走地", "土鸡",
+]
 
 _PAREN = re.compile(r"[（(].*?[）)]")
 
@@ -82,6 +98,10 @@ def classify(name: str) -> str:
     n = name or ""
     if any(w in n for w in FALSE_POSITIVE):
         return "excluded"
+    if any(w in n for w in HIGH_PRIORITY_MODERN):
+        return "modern"
+    if "烧鸡" in n and any(w in n for w in LOCAL_ROAST_CHICKEN_CONTEXT):
+        return "traditional"
     if any(w in n for w in TRADITIONAL):
         return "traditional"
     if any(w in n for w in MODERN):
@@ -144,7 +164,8 @@ def clean(records, keep_gcj02=False, districts=None):
         # 店名不含鸡但推荐菜含白切鸡的店（如普通茶餐厅），靠它才能被识别——这是
         # "菜单渗透率"自动化近似的关键来源。覆盖率需在真实数据上实测。
         tag = p.get("tag") if isinstance(p.get("tag"), str) else ""
-        label = classify(nname + "|" + tag)             # R2+R6（店名+推荐菜联合判定）
+        classify_text = name + "|" + nname + "|" + tag
+        label = classify(classify_text)                 # R2+R6（原始店名+规范名+推荐菜联合判定）
         if label == "excluded":
             stats["false_positive"] += 1
             continue
@@ -152,7 +173,7 @@ def clean(records, keep_gcj02=False, districts=None):
         # 命中来源：招牌(店名本身命中鸡菜)是身份铁证；推荐菜(仅tag命中)是宽口径召回、易混入非鸡餐饮。
         # 招牌含鸡 ⊂ 招牌或推荐菜含鸡，两口径是嵌套关系。用 classify(店名) 判断，避免漏掉
         # "新奥尔良"这类不含"鸡"字的词。
-        name_is_chicken = classify(nname) in ("traditional", "modern", "other_chicken")
+        name_is_chicken = classify(name + "|" + nname) in ("traditional", "modern", "other_chicken")
         match_source = "招牌" if name_is_chicken else ("推荐菜" if label != "non_chicken" else "")
 
         lng, lat = (lng_g, lat_g) if keep_gcj02 else gcj02_to_wgs84(lng_g, lat_g)  # R5
