@@ -23,5 +23,6 @@ venv/
 
 # Keep generated deliverables, but avoid accidental local scratch exports.
 spike/out/
+spike/out_delivery/classification_readme_render/
 scratch/
 tmp/
