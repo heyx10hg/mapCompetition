@@ -8,6 +8,7 @@
 - `cleaning_report.json`: 清洗统计和口径提醒。
 - `rejected_synthetic_samples.csv`: 被剔除的合成样例记录。
 - `background_context_sources.csv`: 官方统计背景源表。硬统计只引用 confidence=高 的行；地方鸡文化新闻/行业报告行目前是待补佐证。
+- `mapping_geoscene_workflow.md`: Windows 端 GeoScene Online 制图清单，说明数据状态、出图要求和上传字段选择。
 
 ## 口径
 - 招牌口径：店名命中鸡类词，代表“专门鸡店”，适合作为主指标。
